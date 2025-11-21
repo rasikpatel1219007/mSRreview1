@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSR Shelters - Project Reviews</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>MSR Shelters - Project Reviews</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="projecthighlights.html">Gallery</a>
+    </nav>
+</header>
+
+<main>
+
+    <!-- Sections remain unchanged -->
+    <section id="poorvi-champions">
+        <h2>Poorvi Champions</h2>
+        <p>Poorvi Champions is a premium residential project...</p>
+        <div class="image-gallery" data-folder="champions"></div>
+    </section>
+
+    <section id="poorvi-enchanting">
+        <h2>Poorvi Enchanting</h2>
+        <p>Poorvi Enchanting, developed by MSR Shelters...</p>
+
+        <h3>Highlights</h3>
+        <ul>
+            <li>Spacious apartments...</li>
+            <li>Proximity to schools...</li>
+            <li>Well-maintained green spaces...</li>
+            <li>24/7 security...</li>
+        </ul>
+
+        <div class="image-gallery" data-folder="enchanting"></div>
+
+        <h3>Issues</h3>
+        <ul>
+            <li>Electricity issues...</li>
+            <li>Inconsistent water supply...</li>
+            <li>Security guidelines missing...</li>
+            <!-- ... keep your issue list as-is -->
+        </ul>
+    </section>
+
+    <section id="mst-passion-square">
+        <h2>MSR Passion Square</h2>
+        <p>MSR Passion Square is a vibrant residential project...</p>
+        <div class="image-gallery" data-folder="passion"></div>
+    </section>
+
+    <!-- Your other sections remain unchanged -->
+
+</main>
+
+<footer>
+    <p>&copy; 2023 MSR Shelters Reviews. All rights reserved.</p>
+</footer>
+
+<!-- AUTO LOADER SCRIPT -->
+<script>
+/**
+ * Map each section folder to its files.
+ * This is required—browsers cannot auto list directories.
+ */
+const mediaFiles = {
+    champions: [
+        "champions1.jpg",
+        "champions2.jpg"
+    ],
+    enchanting: [
+        "enchanting1.jpg",
+        "enchanting2.jpg",
+        "enchanting3.mp4",
+        "enchanting4.jpg",
+        "enchanting5.jpg",
+        "enchanting6.jpg"
+    ],
+    passion: [
+        "passion1.jpg",
+        "passion2.jpg"
+    ]
+};
+
+// Load images/videos into each gallery div
+document.querySelectorAll(".image-gallery").forEach(gallery => {
+    const folder = gallery.dataset.folder;
+
+    if (!mediaFiles[folder]) return;
+
+    mediaFiles[folder].forEach(file => {
+        const ext = file.split('.').pop().toLowerCase();
+        const path = `images/${file}`;
+
+        if (["jpg", "jpeg", "png", "gif", "webp"].includes(ext)) {
+            const img = document.createElement("img");
+            img.src = path;
+            img.alt = file;
+            gallery.appendChild(img);
+        }
+
+        if (["mp4", "ogg", "webm"].includes(ext)) {
+            const video = document.createElement("video");
+            video.controls = true;
+            video.width = 320;
+            video.height = 240;
+            const source = document.createElement("source");
+            source.src = path;
+            source.type = `video/${ext}`;
+            video.appendChild(source);
+            gallery.appendChild(video);
+        }
+    });
+});
+</script>
+
+</body>
+</html>
