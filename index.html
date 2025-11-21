@@ -38,26 +38,8 @@
                 <li>Well-maintained green spaces and recreational areas.</li>
                 <li>24/7 security and power backup.</li>
             </ul>
-            <div class="image-gallery">
-                <img src="images/enchanting1.jpg" alt="Poorvi Enchanting Highlight 1">
-                <img src="images/enchanting2.jpg" alt="Poorvi Enchanting Highlight 2">
- <video width="320" height="240" controls>
-  <source src="images/enchanting3.mp4" type="video/mp4">
-  <source src="images/enchanting3.mp4" type="video/ogg">
-Your browser does not support the video tag.
-</video>
-                                               <img src="images/enchanting4.jpg" alt="Poorvi Enchanting Highlight 4">              
-                                                  <img src="images/enchanting5.jpg" alt="Poorvi Enchanting Highlight 5">
-                                                                  <img src="images/enchanting6.jpg" alt="Poorvi Enchanting Highlight 6">
-
-
-
-
-
-
-
-
-            </div>
+            <div class="image-gallery" data-folder="enchanting"></div>
+            
 
             <h3>Issues</h3>
             <ul>
@@ -118,10 +100,94 @@ Your browser does not support the video tag.
             <p>The information provided on this page is based on publicly available data and resident feedback. While every effort has been made to ensure accuracy, we do not guarantee the completeness or reliability of the information. This page is intended for informational purposes only and does not constitute legal, financial, or professional advice. MSR Shelters or any associated entities are not liable for any actions taken based on the content of this page.</p>
         </section>
     </main>
+<script>
+/* List files you expect in each section */
+    // Generate enchanting1.jpg → enchanting100.jpg
+const enchantingImages = Array.from({ length: 100 }, (_, i) => `enchanting${i + 1}.jpg`);
 
+// Generate enchanting1.mp4 → enchanting100.mp4
+const enchantingVideos = Array.from({ length: 100 }, (_, i) => `enchanting${i + 1}.mp4`);
+
+const enchantingMedia = [
+    ...Array.from({ length: 100 }, (_, i) => `enchanting${i + 1}.jpg`),
+    ...Array.from({ length: 100 }, (_, i) => `enchanting${i + 1}.mp4`)
+];
+
+    const mediaFiles = {
+    champions: [
+        "champions1.jpg",
+        "champions2.jpg"
+    ],
+
+    enchanting: [
+        ...Array.from({ length: 100 }, (_, i) => `enchanting${i + 1}.jpg`),
+        ...Array.from({ length: 100 }, (_, i) => `enchanting${i + 1}.mp4`)
+    ],
+
+    passion: [
+        "passion1.jpg",
+        "passion2.jpg"
+    ]
+};
+/* Check if file exists */
+async function fileExists(url) {
+    try {
+        const res = await fetch(url, { method: "HEAD" });
+        return res.ok;
+    } catch (e) {
+        return false;
+    }
+}
+
+/* Load media only if the file exists */
+async function loadMedia() {
+    const galleries = document.querySelectorAll(".image-gallery");
+
+    for (const gallery of galleries) {
+        const folder = gallery.dataset.folder;
+        const files = mediaFiles[folder] || [];
+
+        for (const file of files) {
+            const path = `images/${file}`;
+            const exists = await fileExists(path);
+
+            if (!exists) {
+                console.warn("File missing:", path);
+                continue; // Skip missing file
+            }
+
+            const ext = file.split('.').pop().toLowerCase();
+
+            if (["jpg", "jpeg", "png", "gif", "webp"].includes(ext)) {
+                const img = document.createElement("img");
+                img.src = path;
+                img.alt = file;
+                gallery.appendChild(img);
+            }
+
+            if (["mp4", "ogg", "webm"].includes(ext)) {
+                const video = document.createElement("video");
+                video.controls = true;
+                video.width = 320;
+                video.height = 240;
+                
+                const source = document.createElement("source");
+                source.src = path;
+                source.type = "video/" + ext;
+
+                video.appendChild(source);
+                gallery.appendChild(video);
+            }
+        }
+    }
+}
+
+loadMedia();
+</script>
     <footer>
         <p>&copy; 2023 MSR Shelters Reviews. All rights reserved.</p>
     </footer>
 </body>
 </html>
+
 
