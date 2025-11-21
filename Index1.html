@@ -62,12 +62,8 @@
     <p>&copy; 2023 MSR Shelters Reviews. All rights reserved.</p>
 </footer>
 
-<!-- AUTO LOADER SCRIPT -->
 <script>
-/**
- * Map each section folder to its files.
- * This is required—browsers cannot auto list directories.
- */
+/* List files you expect in each section */
 const mediaFiles = {
     champions: [
         "champions1.jpg",
@@ -82,41 +78,66 @@ const mediaFiles = {
         "enchanting6.jpg"
     ],
     passion: [
+        
         "passion1.jpg",
         "passion2.jpg"
     ]
 };
 
-// Load images/videos into each gallery div
-document.querySelectorAll(".image-gallery").forEach(gallery => {
-    const folder = gallery.dataset.folder;
+/* Check if file exists */
+async function fileExists(url) {
+    try {
+        const res = await fetch(url, { method: "HEAD" });
+        return res.ok;
+    } catch (e) {
+        return false;
+    }
+}
 
-    if (!mediaFiles[folder]) return;
+/* Load media only if the file exists */
+async function loadMedia() {
+    const galleries = document.querySelectorAll(".image-gallery");
 
-    mediaFiles[folder].forEach(file => {
-        const ext = file.split('.').pop().toLowerCase();
-        const path = `images/${file}`;
+    for (const gallery of galleries) {
+        const folder = gallery.dataset.folder;
+        const files = mediaFiles[folder] || [];
 
-        if (["jpg", "jpeg", "png", "gif", "webp"].includes(ext)) {
-            const img = document.createElement("img");
-            img.src = path;
-            img.alt = file;
-            gallery.appendChild(img);
+        for (const file of files) {
+            const path = `images/${file}`;
+            const exists = await fileExists(path);
+
+            if (!exists) {
+                console.warn("File missing:", path);
+                continue; // Skip missing file
+            }
+
+            const ext = file.split('.').pop().toLowerCase();
+
+            if (["jpg", "jpeg", "png", "gif", "webp"].includes(ext)) {
+                const img = document.createElement("img");
+                img.src = path;
+                img.alt = file;
+                gallery.appendChild(img);
+            }
+
+            if (["mp4", "ogg", "webm"].includes(ext)) {
+                const video = document.createElement("video");
+                video.controls = true;
+                video.width = 320;
+                video.height = 240;
+                
+                const source = document.createElement("source");
+                source.src = path;
+                source.type = "video/" + ext;
+
+                video.appendChild(source);
+                gallery.appendChild(video);
+            }
         }
+    }
+}
 
-        if (["mp4", "ogg", "webm"].includes(ext)) {
-            const video = document.createElement("video");
-            video.controls = true;
-            video.width = 320;
-            video.height = 240;
-            const source = document.createElement("source");
-            source.src = path;
-            source.type = `video/${ext}`;
-            video.appendChild(source);
-            gallery.appendChild(video);
-        }
-    });
-});
+loadMedia();
 </script>
 
 </body>
