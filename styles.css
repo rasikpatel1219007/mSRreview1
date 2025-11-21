@@ -27,16 +27,38 @@ body > h1, h2 {
     color: #333;
 }
 
+/* Mobile-friendly responsive gallery */
 .image-gallery {
-    display: flex;
-    gap: 1rem;
-    margin: 1rem 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
 }
 
-.image-gallery img {
-    width: 30%;
-    border: 2px solid #ddd;
-    border-radius: 5px;
+/* Make images scale nicely */
+.image-gallery img,
+.image-gallery video {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+/* Slight hover effect for desktop */
+@media (hover: hover) {
+    .image-gallery img:hover,
+    .image-gallery video:hover {
+        transform: scale(1.03);
+        transition: 0.2s ease;
+    }
+}
+
+/* Better layout on very small screens */
+@media (max-width: 480px) {
+    .image-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 8px;
+    }
 }
 
 section {
@@ -75,3 +97,4 @@ nav a:hover {
     background: #fff;
     color: #444;
 }
+
