@@ -64,26 +64,33 @@
 
 <script>
 /* List files you expect in each section */
-const mediaFiles = {
+    // Generate enchanting1.jpg → enchanting100.jpg
+const enchantingImages = Array.from({ length: 100 }, (_, i) => `enchanting${i + 1}.jpg`);
+
+// Generate enchanting1.mp4 → enchanting100.mp4
+const enchantingVideos = Array.from({ length: 100 }, (_, i) => `enchanting${i + 1}.mp4`);
+
+const enchantingMedia = [
+    ...Array.from({ length: 100 }, (_, i) => `enchanting${i + 1}.jpg`),
+    ...Array.from({ length: 100 }, (_, i) => `enchanting${i + 1}.mp4`)
+];
+
+    const mediaFiles = {
     champions: [
         "champions1.jpg",
         "champions2.jpg"
     ],
+
     enchanting: [
-        "enchanting1.jpg",
-        "enchanting2.jpg",
-        "enchanting3.mp4",
-        "enchanting4.jpg",
-        "enchanting5.jpg",
-        "enchanting6.jpg"
+        ...Array.from({ length: 100 }, (_, i) => `enchanting${i + 1}.jpg`),
+        ...Array.from({ length: 100 }, (_, i) => `enchanting${i + 1}.mp4`)
     ],
+
     passion: [
-        
         "passion1.jpg",
         "passion2.jpg"
     ]
 };
-
 /* Check if file exists */
 async function fileExists(url) {
     try {
